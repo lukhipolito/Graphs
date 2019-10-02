@@ -11,16 +11,36 @@ namespace Grafos012
     {
         static void Main(string[] args)
         {
-            AdjacencyList lst = new AdjacencyList(6);
+            AdjacencyList lst = new AdjacencyList(7);
 
-            lst.UndirectedAddLine(1, 2);
-            lst.UndirectedAddLine(1, 3);
-            lst.UndirectedAddLine(2, 4);
-            lst.UndirectedAddLine(3, 4);
-            lst.UndirectedAddLine(4, 5);
-            lst.UndirectedAddLine(5, 6);
+            lst.AddLine(0, 2);
+            lst.AddLine(0, 3);
+            lst.AddLine(0, 4);
+
+            lst.AddLine(2, 4);
+
+            lst.AddLine(3, 4);
+            lst.AddLine(3, 5);
+
+            lst.AddLine(4, 5);
+
+            lst.AddLine(5, 6);
+            lst.AddLine(5, 1);
+
+            lst.AddLine(1, 2);
+            lst.AddLine(1, 4);
+            lst.AddLine(1, 6);
+            lst.AddLine(1, 1);
 
             lst.Show();
+
+            Console.WriteLine("Distance between nodes");
+            for (int i = 0; i < 7; i++)
+            {
+                var a = Common.Helper.BFS(lst, i);
+                Common.Helper.show(a, i);
+            }
+
             System.Console.ReadKey();
         }
     }

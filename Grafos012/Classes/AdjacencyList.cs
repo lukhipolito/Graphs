@@ -23,11 +23,11 @@ namespace Grafos012.Classes
 
         public void AddLine(int vertex, int num)
         {
-            this.Digraph[vertex - 1].Add(num);
+            this.Digraph[vertex].Add(num);
             this.lineNumber++;
         }
 
-        public void UndirectedAddLine(int vertex, int num)
+        public void AddUndirectedLine(int vertex, int num)
         {
             this.AddLine(vertex, num);
             this.AddLine(num, vertex);
@@ -35,9 +35,10 @@ namespace Grafos012.Classes
 
         public void Show()
         {
+            Console.WriteLine("Selected Digraph: ");
             for(int i=0; i < this.Digraph.Count; i++)
             {
-                Console.Write((i+1)+": ");
+                Console.Write((i)+": ");
                 for(int j=0; j<this.Digraph[i].Count;j++)
                     Console.Write("-> "+ this.Digraph[i][j] + " ");
                 Console.WriteLine(" ");
