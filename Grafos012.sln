@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grafos012", "Grafos012\Grafos012.csproj", "{592BA93C-3AE3-4649-B3BB-065B3351CE0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabirynthProject", "LabirynthProject\LabirynthProject.csproj", "{8A4F9E25-C3D9-49B1-BAA7-96C429650C0F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{592BA93C-3AE3-4649-B3BB-065B3351CE0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{592BA93C-3AE3-4649-B3BB-065B3351CE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{592BA93C-3AE3-4649-B3BB-065B3351CE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{592BA93C-3AE3-4649-B3BB-065B3351CE0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A4F9E25-C3D9-49B1-BAA7-96C429650C0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A4F9E25-C3D9-49B1-BAA7-96C429650C0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A4F9E25-C3D9-49B1-BAA7-96C429650C0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A4F9E25-C3D9-49B1-BAA7-96C429650C0F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
