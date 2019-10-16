@@ -31,7 +31,7 @@ namespace Grafos012.Classes
 
         public void AddLine(int vertex, int num)
         {
-            this.Digraph[vertex] = new List<int> { num };
+            this.Digraph[vertex].Add(num);
             this.lineNumber++;
         }
 

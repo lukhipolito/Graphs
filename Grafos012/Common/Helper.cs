@@ -46,12 +46,68 @@ namespace Grafos012.Common
             return dist;
         }
 
+        public static List<int> TopologicOrdenation(AdjacencyList dg)
+        {
+            List<int> topologicOrdenation = new List<int>();
+            List<int> auxListOut = new List<int>();
+            List<int> auxListIn = new List<int>();
+            dg.Digraph.ForEach(x => {
+                auxListOut.Add(0);
+                auxListIn.Add(0);
+                topologicOrdenation.Add(0);
+            });
+            dg.WeightedDigraph.ForEach(x => {
+                auxListOut[x.v]++;
+                auxListIn[x.w]++;
+            });
+            List<int> startersIndex = new List<int>();
+            List<int> middleIndex = new List<int>();
+            List<int> endersIndex = new List<int>();
+
+            for (int i = 0; i < auxListIn.Count; i++)
+            {
+                if (auxListIn[i] == 0)
+                    startersIndex.Add(i);
+                if (auxListOut[i] == 0)
+                    endersIndex.Add(i);
+            }
+
+            for (int i = 0; i < startersIndex.Count; i++)
+                topologicOrdenation[i] = startersIndex[i];
+
+            foreach (var ark in dg.WeightedDigraph)
+            {
+                if (!topologicOrdenation.Contains(ark.w) && !endersIndex.Contains(ark.w) && !middleIndex.Contains(ark.w))
+                {
+                    middleIndex.Add(ark.w);
+                }
+            }
+
+            for (int i = startersIndex.Count; i < middleIndex.Count + startersIndex.Count; i++)
+                topologicOrdenation[i] = middleIndex[i-startersIndex.Count];
+
+
+            for (int i = middleIndex.Count + startersIndex.Count; i < middleIndex.Count + startersIndex.Count + endersIndex.Count; i++)
+                topologicOrdenation[i+1] = endersIndex[i-middleIndex.Count - startersIndex.Count];
+
+            return topologicOrdenation;
+        }
+
         public static void show(List<int?> lst, int i)
         {
             Console.Write(i.ToString() + " : ");
             foreach (var num in lst)
             {
                 Console.Write((num !=null ? num.ToString() : "Infinito")+ "| ");
+            }
+            Console.WriteLine("");
+        }
+
+        public static void show(List<int> lst)
+        {
+            foreach (var num in lst)
+            {
+                Console.Write(num.ToString() + "| ");
             }
             Console.WriteLine("");
         }
