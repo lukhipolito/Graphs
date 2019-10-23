@@ -1,0 +1,9 @@
+C:\Users\1722130054\Documents\Grafos\Graphs-master\Grafos012\bin\Debug\Grafos012.exe.config
+C:\Users\1722130054\Documents\Grafos\Graphs-master\Grafos012\obj\Debug\Grafos012.csprojResolveAssemblyReference.cache
+C:\Users\1722130054\Documents\Grafos\Graphs-master\Grafos012\bin\Debug\Grafos012.exe
+C:\Users\1722130054\Documents\Grafos\Graphs-master\Grafos012\bin\Debug\Grafos012.pdb
+C:\Users\1722130054\Documents\Grafos\Graphs-master\Grafos012\obj\Debug\Grafos012.exe
+C:\Users\1722130054\Documents\Grafos\Graphs-master\Grafos012\obj\Debug\Grafos012.pdb
+C:\Users\1722130054\Documents\Projects\GRAFOS\Grafos012\Grafos012\bin\Debug\Grafos012.exe.config
+C:\Users\1722130054\Documents\Projects\GRAFOS\Grafos012\Grafos012\obj\Debug\Grafos012.exe
+C:\Users\1722130054\Documents\Projects\GRAFOS\Grafos012\Grafos012\obj\Debug\Grafos012.pdb
