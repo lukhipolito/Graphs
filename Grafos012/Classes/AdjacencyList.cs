@@ -10,6 +10,7 @@ namespace Grafos012.Classes
     {
         public AdjacencyList(int _vertexNumber)
         {
+            this.WeightedDigraph = new List<Ark>();
             this.vertexNumber = _vertexNumber;
             this.lineNumber = 0;
             this.Digraph = new List<List<int>>();
@@ -17,9 +18,16 @@ namespace Grafos012.Classes
                 this.Digraph.Add(new List<int>());
         }
 
+        public AdjacencyList()
+        {
+            this.WeightedDigraph = new List<Ark>();
+        }
+
         public int vertexNumber, lineNumber;
 
         public List<List<int>> Digraph;
+
+        public List<Ark> WeightedDigraph;
 
         public void AddLine(int vertex, int num)
         {
@@ -31,6 +39,12 @@ namespace Grafos012.Classes
         {
             this.AddLine(vertex, num);
             this.AddLine(num, vertex);
+        }
+
+        public void AddArk(int v, int w, double weight)
+        {
+            this.WeightedDigraph.Add(new Ark(v, w, weight));
+            this.AddLine(v, w);
         }
 
         public void Show()
