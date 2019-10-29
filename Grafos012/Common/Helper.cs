@@ -124,12 +124,21 @@ namespace Grafos012.Common
 
         private static bool verifyCicloNegativo(AdjacencyList dg)
         {
-            foreach (var ark in dg.WeightedDigraph)
-            {
-                if (Dist[ark.w] > Dist[ark.v] + (int)ark.weight)
-                    return false;
-            }
+            //foreach (var ark in dg.WeightedDigraph)
+            //{
+            //    if (Dist[ark.w] > Dist[ark.v] + (int)ark.weight)
+            //        return false;
+            //}
             return true;
+        }
+
+        private static void Kruskal(AdjacencyList dg)
+        {
+            List<Ark> Boss = new List<Ark>();
+            for (int v=0; v< dg.WeightedDigraph.Count; v++)
+            {
+                //Boss.Add(v);
+            }
         }
 
         public static void show(List<int?> lst, int i)
