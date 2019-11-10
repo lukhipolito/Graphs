@@ -10,16 +10,16 @@ namespace Grafos012.Classes
     {
         public Ark(int _v, int _w, double _weight)
         {
-            this.initialNod = _v;
-            this.finalNod = _w;
+            this.initialNode = _v;
+            this.finalNode = _w;
             this.value = _weight;
         }
 
         public double value { get; set; }
 
-        public int initialNod { get; set; }
+        public int initialNode { get; set; }
 
-        public int finalNod { get; set; }
+        public int finalNode { get; set; }
 
     }
 }

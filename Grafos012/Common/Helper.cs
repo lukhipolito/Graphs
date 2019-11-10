@@ -68,6 +68,12 @@ namespace Grafos012.Common
             return visit;
         }
 
+        /// <summary>
+        /// BFS made in tree format. Saving information of each node's parent
+        /// </summary>
+        /// <param name="dg"></param>
+        /// <param name="startIndex"></param>
+        /// <returns></returns>
         public static List<int?> BFS_tree(AdjacencyList dg, int startIndex)
         {
             int cont = 0;
@@ -94,15 +100,20 @@ namespace Grafos012.Common
             }
             return visit;
         }
-
+        /// <summary>
+        /// Digraph Distance calculation. The metrics in this method is quantity of nodes or 'steps'. Not a valued distance
+        /// </summary>
+        /// <param name="dg"></param>
+        /// <param name="startIndex"></param>
+        /// <returns></returns>
         public static List<int?>[] DIGRAPHdist(AdjacencyList dg, int startIndex)
         {
             List<int?> dist = new List<int?>();
-            List<int?> pai = new List<int?>();
+            List<int?> parent = new List<int?>();
             List<int> stack = new List<int>();
-            dg.Digraph.ForEach(_ => { dist.Add(null); pai.Add(null); });
+            dg.Digraph.ForEach(_ => { dist.Add(null); parent.Add(null); });
             dist[startIndex] = 0;
-            pai[startIndex] = startIndex;
+            parent[startIndex] = startIndex;
             stack.Add(startIndex);
             while (stack.Any())
             {
@@ -114,15 +125,49 @@ namespace Grafos012.Common
                     if (dist[a.First()] == null)
                     {
                         dist[a.First()] = dist[v] + 1;
-                        pai[a.First()] = v;
+                        parent[a.First()] = v;
                         stack.Add(a.First());
                     }
                 }
             }
-            return new List<int?>[] { dist, pai };
+            return new List<int?>[] { dist, parent };
         }
 
-        public static List<int> TopologicOrdenation(AdjacencyList dg)
+
+        public static List<double?> Dijkstra(AdjacencyList dg, int starIndex)
+        {
+            List<int?> parent = new List<int?>();
+            List<double?> costs = new List<double?>();
+            List<Ark> PriorityStack = new List<Ark>();
+            dg.Digraph.ForEach(_ => { parent.Add(null); costs.Add(null); });
+            costs[starIndex] = 0;
+            parent[starIndex] = starIndex;
+            PriorityStack.Add(dg.WeightedDigraph.Where(x => x.initialNode == starIndex).OrderBy(x => x.value).First());
+            while (PriorityStack.Any())
+            {
+                PriorityStack.OrderBy(x => x.value);
+                var edge = PriorityStack.First();
+                PriorityStack.Remove(edge);
+                foreach (var ark in dg.WeightedDigraph.Where(x => x.initialNode == edge.finalNode))
+                {
+                    if (costs[ark.initialNode] == null)
+                    {
+                        parent[ark.initialNode] = edge.initialNode;
+                        costs[ark.initialNode] = costs[edge.initialNode] + ark.value;
+                        PriorityStack.Add(ark);
+                    }
+                    else if (costs[ark.finalNode] > costs[edge.finalNode] + ark.value || costs[ark.finalNode] == null)
+                    {
+                        parent[ark.finalNode] = edge.finalNode;
+                        costs[ark.finalNode] = costs[edge.finalNode] + ark.value;
+                    }
+                }
+            }
+            return costs;
+        }
+    
+
+    public static List<int> TopologicOrdenation(AdjacencyList dg)
         {
             List<int> topologicOrdenation = new List<int>();
             List<int> auxListOut = new List<int>();
@@ -133,8 +178,8 @@ namespace Grafos012.Common
                 topologicOrdenation.Add(0);
             });
             dg.WeightedDigraph.ForEach(x => {
-                auxListOut[x.initialNod]++;
-                auxListIn[x.finalNod]++;
+                auxListOut[x.initialNode]++;
+                auxListIn[x.finalNode]++;
             });
             List<int> startersIndex = new List<int>();
             List<int> middleIndex = new List<int>();
@@ -153,9 +198,9 @@ namespace Grafos012.Common
 
             foreach (var ark in dg.WeightedDigraph)
             {
-                if (!topologicOrdenation.Contains(ark.finalNod) && !endersIndex.Contains(ark.finalNod) && !middleIndex.Contains(ark.finalNod))
+                if (!topologicOrdenation.Contains(ark.finalNode) && !endersIndex.Contains(ark.finalNode) && !middleIndex.Contains(ark.finalNode))
                 {
-                    middleIndex.Add(ark.finalNod);
+                    middleIndex.Add(ark.finalNode);
                 }
             }
 
@@ -191,10 +236,10 @@ namespace Grafos012.Common
 
         private static void RELAX(Ark arc, ref List<int> _pai, ref List<int> _dist)
         {
-            if (_dist[arc.finalNod] > arc.value)
+            if (_dist[arc.finalNode] > arc.value)
             {
-                _dist[arc.finalNod] = (int)arc.value;
-                _pai[arc.finalNod] = arc.initialNod;
+                _dist[arc.finalNode] = (int)arc.value;
+                _pai[arc.finalNode] = arc.initialNode;
             }
         }
 
