@@ -95,6 +95,33 @@ namespace Grafos012.Common
             return visit;
         }
 
+        public static List<int?>[] DIGRAPHdist(AdjacencyList dg, int startIndex)
+        {
+            List<int?> dist = new List<int?>();
+            List<int?> pai = new List<int?>();
+            List<int> stack = new List<int>();
+            dg.Digraph.ForEach(_ => { dist.Add(null); pai.Add(null); });
+            dist[startIndex] = 0;
+            pai[startIndex] = startIndex;
+            stack.Add(startIndex);
+            while (stack.Any())
+            {
+                List<int> a;
+                int v = stack.First();
+                stack.RemoveAt(0);
+                for (a = dg.Digraph.First(); a.Any(); a.RemoveAt(0))
+                {
+                    if (dist[a.First()] == null)
+                    {
+                        dist[a.First()] = dist[v] + 1;
+                        pai[a.First()] = v;
+                        stack.Add(a.First());
+                    }
+                }
+            }
+            return new List<int?>[] { dist, pai };
+        }
+
         public static List<int> TopologicOrdenation(AdjacencyList dg)
         {
             List<int> topologicOrdenation = new List<int>();
