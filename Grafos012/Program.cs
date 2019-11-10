@@ -11,42 +11,33 @@ namespace Grafos012
     {
         static void Main(string[] args)
         {
-            AdjacencyList lst = new AdjacencyList(13);
+            AdjacencyList lst = new AdjacencyList(6);
 
-            lst.AddArk(0, 1, 1);
-            lst.AddArk(0, 5, 1);
-            lst.AddArk(0, 6, 1);
+            lst.AddLine(0, 2);
+            lst.AddLine(0, 3);
+            lst.AddLine(0, 4);
+            lst.AddLine(1, 2);
+            lst.AddLine(1, 4);
+            lst.AddLine(2, 4);
+            lst.AddLine(3, 4);
+            lst.AddLine(3, 5);
+            lst.AddLine(4, 5);
+            lst.AddLine(5, 1);
 
-            lst.AddArk(2, 0, 1);
-            lst.AddArk(2, 3, 1);
-
-            lst.AddArk(3, 5, 1);
-
-            lst.AddArk(5, 4, 1);
-
-            lst.AddArk(8, 7, 1);
-
-            lst.AddArk(7, 6, 1);
-
-            lst.AddArk(6, 4, 1);
-            lst.AddArk(6, 9, 1);
-
-            lst.AddArk(9, 10, 1);
-            lst.AddArk(9, 11, 1);
-            lst.AddArk(9, 12, 1);
-
-            lst.AddArk(11, 12, 1);
+            var pre = Common.Helper.BFS(lst, 0);
 
             lst.Show();
 
-            Console.WriteLine("Topologic Ordenation");
-            //for (int i = 0; i < 30; i++)
-            //{
-            //    var a = Common.Helper.TopologicOrdenation(lst, i);
-            //    Common.Helper.show(a, i);
-            //}
-            var a = Common.Helper.TopologicOrdenation(lst);
-            Common.Helper.show(a);
+            Console.WriteLine("Pre vector: ");
+            pre.ForEach(x =>
+            {
+                Console.Write($"[{pre.FindIndex(p => p == x)}] ");
+            });
+            Console.WriteLine();
+            pre.ForEach(x =>
+            {
+                Console.Write($" {x}  ");
+            });
 
             System.Console.ReadKey();
         }

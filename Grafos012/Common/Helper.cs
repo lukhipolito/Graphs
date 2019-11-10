@@ -9,41 +9,90 @@ namespace Grafos012.Common
 {
     internal static class Helper
     {
-        static bool VerifyPath(AdjacencyList dg, int x, int y)
+        /// <summary>
+        /// DFS - Depth-First Search. Goes through every ark and every node to find the shortest path.
+        /// </summary>
+        /// <param name="dg"></param>
+        /// <param name="startIndex"></param>
+        public static List<int?> DFS (AdjacencyList dg)
         {
-
-            return true;
+            int cont = 0;
+            List<int?> pre = new List<int?>();
+            dg.Digraph.ForEach(_ => pre.Add(null));
+            for (int v = 0; v < dg.Digraph.Count; v++)
+            {
+                if (pre[v] == null)
+                    DFS_Recursion(dg, v, ref pre, ref cont);
+            }
+            return pre;
         }
 
-        static bool VerifyPath(Matrix mx, int x, int y)
+        private static void DFS_Recursion(AdjacencyList dg, int startIndex, ref List<int?> pre, ref int cont)
         {
-
-            return true;
+            int finalIndex;
+            pre[startIndex] = cont++;
+            for (finalIndex = 0; finalIndex < dg.Digraph.Count; finalIndex++)
+            {
+                if (dg.Digraph[startIndex].Any(x => x == finalIndex) && pre[finalIndex] == null)
+                    DFS_Recursion(dg, finalIndex, ref pre, ref cont);
+            }
         }
 
+        /// <summary>
+        /// BFS - Broadth-First Search. Gets all nodes at the reach of current node.
+        /// </summary>
+        /// <param name="dg"></param>
+        /// <param name="startIndex"></param>
+        /// <returns></returns>
         public static List<int?> BFS (AdjacencyList dg, int startIndex)
         {
-            List<int?> dist = new List<int?>();
+            int cont = 0;
+            List<int?> visit = new List<int?>();
             List<int> stack = new List<int>();
-
-            dg.Digraph.ForEach(x => dist.Add(null));
-
-            dist[startIndex] = 0;
+            dg.Digraph.ForEach(_ => visit.Add(null));
+            visit[startIndex] = cont++;
             stack.Add(startIndex);
             while (stack.Any())
             {
-                int aux = stack.First();
+                int v = stack.First();
                 stack.RemoveAt(0);
-                foreach(var a in dg.Digraph[aux])
+                for (List<int> a = dg.Digraph[v]; a.Any(); a.RemoveAt(0))
                 {
-                    if (dist[a] == null && !stack.Any(x => x == a))
+                    if (visit[a.First()] == null)
                     {
-                        dist[a] = dist[aux] + 1;
-                        stack.Add(a);
+                        visit[a.First()] = cont++;
+                        stack.Add(a.First());
                     }
                 }
             }
-            return dist;
+            return visit;
+        }
+
+        public static List<int?> BFS_tree(AdjacencyList dg, int startIndex)
+        {
+            int cont = 0;
+            List<int?> visit = new List<int?>();
+            List<int?> parent = new List<int?>(); /////////
+            List<int> stack = new List<int>();
+            dg.Digraph.ForEach(_ => { visit.Add(null); parent.Add(null); });
+            visit[startIndex] = cont++;
+            parent[startIndex] = startIndex;
+            stack.Add(startIndex);
+            while (stack.Any())
+            {
+                int v = stack.First();
+                stack.RemoveAt(0);
+                for (List<int> a = dg.Digraph[v]; a.Any(); a.RemoveAt(0))
+                {
+                    if (visit[a.First()] == null)
+                    {
+                        visit[a.First()] = cont++;
+                        parent[a.First()] = v; ///////////
+                        stack.Add(a.First());
+                    }
+                }
+            }
+            return visit;
         }
 
         public static List<int> TopologicOrdenation(AdjacencyList dg)
@@ -57,8 +106,8 @@ namespace Grafos012.Common
                 topologicOrdenation.Add(0);
             });
             dg.WeightedDigraph.ForEach(x => {
-                auxListOut[x.v]++;
-                auxListIn[x.w]++;
+                auxListOut[x.initialNod]++;
+                auxListIn[x.finalNod]++;
             });
             List<int> startersIndex = new List<int>();
             List<int> middleIndex = new List<int>();
@@ -77,9 +126,9 @@ namespace Grafos012.Common
 
             foreach (var ark in dg.WeightedDigraph)
             {
-                if (!topologicOrdenation.Contains(ark.w) && !endersIndex.Contains(ark.w) && !middleIndex.Contains(ark.w))
+                if (!topologicOrdenation.Contains(ark.finalNod) && !endersIndex.Contains(ark.finalNod) && !middleIndex.Contains(ark.finalNod))
                 {
-                    middleIndex.Add(ark.w);
+                    middleIndex.Add(ark.finalNod);
                 }
             }
 
@@ -115,10 +164,10 @@ namespace Grafos012.Common
 
         private static void RELAX(Ark arc, ref List<int> _pai, ref List<int> _dist)
         {
-            if (_dist[arc.w] > arc.weight)
+            if (_dist[arc.finalNod] > arc.value)
             {
-                _dist[arc.w] = (int)arc.weight;
-                _pai[arc.w] = arc.v;
+                _dist[arc.finalNod] = (int)arc.value;
+                _pai[arc.finalNod] = arc.initialNod;
             }
         }
 
@@ -141,17 +190,17 @@ namespace Grafos012.Common
             }
         }
 
-        public static void show(List<int?> lst, int i)
+        public static void Show(List<int?> lst, int i)
         {
             Console.Write(i.ToString() + " : ");
             foreach (var num in lst)
             {
-                Console.Write((num !=null ? num.ToString() : "Infinito")+ "| ");
+                Console.Write((num !=null ? num.ToString() : "Infinity")+ "| ");
             }
             Console.WriteLine("");
         }
 
-        public static void show(List<int> lst)
+        public static void Show(List<int> lst)
         {
             foreach (var num in lst)
             {
