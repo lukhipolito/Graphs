@@ -11,19 +11,17 @@ namespace Grafos012
     {
         static void Main(string[] args)
         {
-            AdjacencyList lst = new AdjacencyList(6);
+            AdjacencyList lst = new AdjacencyList(5);
 
-            lst.AddArk(0, 1, 5);
-            lst.AddArk(0, 3, -2);
-            lst.AddArk(1, 2, 1);
-            lst.AddArk(2, 3, 2);
-            lst.AddArk(2, 4, 7);
-            lst.AddArk(2, 5, 3);
-            lst.AddArk(3, 4, 3);
-            lst.AddArk(4, 5, 10);
-            
+            lst.AddArk(0, 1, 1);
+            lst.AddArk(0, 3, 3);
+            lst.AddArk(0, 4, 10);
+            lst.AddArk(1, 2, 5);
+            lst.AddArk(2, 4, 1);
+            lst.AddArk(3, 2, 2);
+            lst.AddArk(3, 4, 6);
 
-            var pre = Common.Helper.Bellman_Ford(lst);
+            var pre = Common.Helper.Dijkstra(lst, 0);
 
             lst.Show();
 
