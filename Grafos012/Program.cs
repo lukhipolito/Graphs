@@ -13,15 +13,14 @@ namespace Grafos012
         {
             AdjacencyList lst = new AdjacencyList(5);
 
-            lst.AddArk(0, 1, 1);
-            lst.AddArk(0, 3, 3);
-            lst.AddArk(0, 4, 10);
-            lst.AddArk(1, 2, 5);
+            lst.AddArk(0, 1, 5);
+            lst.AddArk(0, 2, 10);
+            lst.AddArk(1, 3, 3);
             lst.AddArk(2, 4, 1);
-            lst.AddArk(3, 2, 2);
             lst.AddArk(3, 4, 6);
+            lst.AddArk(4, 1, -7);
 
-            var pre = Common.Helper.Dijkstra(lst, 0);
+            var pre = Common.Helper.Bellman_Ford(lst, 0);
 
             lst.Show();
 

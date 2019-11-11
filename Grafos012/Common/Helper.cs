@@ -217,35 +217,46 @@ namespace Grafos012.Common
             return topologicOrdenation;
         }
 
-        public static List<int> Bellman_Ford(AdjacencyList dg)
+        /// <summary>
+        /// Minimal path finder algorithm when not all arks have positive values.
+        /// </summary>
+        /// <param name="dg"></param>
+        /// <param name="startIndex"></param>
+        /// <returns></returns>
+        public static List<double> Bellman_Ford(AdjacencyList dg, int startIndex)
         {
             List<int?> parent = new List<int?>();
-            List<int> dist = new List<int>();
+            List<double> dist = new List<double>();
             dg.Digraph.ForEach(x => {
                 parent.Add(null);
-                dist.Add(int.MaxValue);
+                dist.Add(double.MaxValue);
             });
+            parent[startIndex] = startIndex;
+            dist[startIndex] = 0;
 
-            for (int i=0; i<dg.Digraph.Count - 1; i++)
+            for (int i=0; i<dg.Digraph.Count; i++)
             {
                 foreach(var ark in dg.WeightedDigraph)
                 {
                     RELAX(ark, ref parent, ref dist);
                 }
-            }          
-            return dist;
+            }
+            if (verifyCicloNegativo(dg, ref dist))
+                return dist;
+            else
+                return new List<double>();
         }
 
-        private static void RELAX(Ark arc, ref List<int?> _parent, ref List<int> _dist)
+        private static void RELAX(Ark ark, ref List<int?> _parent, ref List<double> _dist)
         {
-            if (_dist[arc.finalNode] > arc.value)
+            if (_dist[ark.finalNode] > _dist[ark.initialNode] + ark.value)
             {
-                _dist[arc.finalNode] = (int)arc.value;
-                _parent[arc.finalNode] = arc.initialNode;
+                _dist[ark.finalNode] = _dist[ark.initialNode] + ark.value;
+                _parent[ark.finalNode] = ark.initialNode;
             }
         }
 
-        private static bool verifyCicloNegativo(AdjacencyList dg, ref List<int> dist)
+        private static bool verifyCicloNegativo(AdjacencyList dg, ref List<double> dist)
         {
             foreach (var ark in dg.WeightedDigraph)
             {
