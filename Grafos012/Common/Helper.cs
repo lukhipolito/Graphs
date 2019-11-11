@@ -167,7 +167,7 @@ namespace Grafos012.Common
         }
     
 
-    public static List<int> TopologicOrdenation(AdjacencyList dg)
+        public static List<int> TopologicOrdenation(AdjacencyList dg)
         {
             List<int> topologicOrdenation = new List<int>();
             List<int> auxListOut = new List<int>();
@@ -182,7 +182,7 @@ namespace Grafos012.Common
                 auxListIn[x.finalNode]++;
             });
             List<int> startersIndex = new List<int>();
-            List<int> middleIndex = new List<int>();
+            List<int?> middleIndex = new List<int?>();
             List<int> endersIndex = new List<int>();
 
             for (int i = 0; i < auxListIn.Count; i++)
@@ -196,60 +196,57 @@ namespace Grafos012.Common
             for (int i = 0; i < startersIndex.Count; i++)
                 topologicOrdenation[i] = startersIndex[i];
 
-            foreach (var ark in dg.WeightedDigraph)
-            {
-                if (!topologicOrdenation.Contains(ark.finalNode) && !endersIndex.Contains(ark.finalNode) && !middleIndex.Contains(ark.finalNode))
-                {
-                    middleIndex.Add(ark.finalNode);
-                }
-            }
+            var dgAux = dg;
+            dgAux.WeightedDigraph.RemoveAll(x => startersIndex.Contains(x.initialNode) || endersIndex.Contains(x.finalNode));
+
+            middleIndex = BFS(dgAux, startersIndex.Last());
+            middleIndex.RemoveAll(x => startersIndex.Contains((int)x) || endersIndex.Contains((int)x));
 
             for (int i = startersIndex.Count; i < middleIndex.Count + startersIndex.Count; i++)
-                topologicOrdenation[i] = middleIndex[i-startersIndex.Count];
+                topologicOrdenation[i] = (int)middleIndex[i-startersIndex.Count];
 
 
             for (int i = middleIndex.Count + startersIndex.Count; i < middleIndex.Count + startersIndex.Count + endersIndex.Count; i++)
-                topologicOrdenation[i+1] = endersIndex[i-middleIndex.Count - startersIndex.Count];
+                topologicOrdenation[i] = endersIndex[i-middleIndex.Count - startersIndex.Count];
 
             return topologicOrdenation;
         }
 
-        public static void Bellman_Ford(AdjacencyList dg)
+        public static List<int> Bellman_Ford(AdjacencyList dg)
         {
-            List<int> Pai = new List<int>();
-            List<int> Dist = new List<int>();
+            List<int?> parent = new List<int?>();
+            List<int> dist = new List<int>();
             dg.Digraph.ForEach(x => {
-                Pai.Add(int.MaxValue);
-                Dist.Add(int.MaxValue);
+                parent.Add(null);
+                dist.Add(int.MaxValue);
             });
 
             for (int i=0; i<dg.Digraph.Count - 1; i++)
             {
                 foreach(var ark in dg.WeightedDigraph)
                 {
-                    RELAX(ark, ref Pai, ref Dist);
+                    RELAX(ark, ref parent, ref dist);
                 }
-            }
-            
-
+            }          
+            return dist;
         }
 
-        private static void RELAX(Ark arc, ref List<int> _pai, ref List<int> _dist)
+        private static void RELAX(Ark arc, ref List<int?> _parent, ref List<int> _dist)
         {
             if (_dist[arc.finalNode] > arc.value)
             {
                 _dist[arc.finalNode] = (int)arc.value;
-                _pai[arc.finalNode] = arc.initialNode;
+                _parent[arc.finalNode] = arc.initialNode;
             }
         }
 
-        private static bool verifyCicloNegativo(AdjacencyList dg)
+        private static bool verifyCicloNegativo(AdjacencyList dg, ref List<int> dist)
         {
-            //foreach (var ark in dg.WeightedDigraph)
-            //{
-            //    if (Dist[ark.w] > Dist[ark.v] + (int)ark.weight)
-            //        return false;
-            //}
+            foreach (var ark in dg.WeightedDigraph)
+            {
+                if (dist[ark.finalNode] > dist[ark.initialNode] + ark.value)
+                    return false;
+            }
             return true;
         }
 
