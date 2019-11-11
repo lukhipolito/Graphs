@@ -133,38 +133,43 @@ namespace Grafos012.Common
             return new List<int?>[] { dist, parent };
         }
 
-
-        public static List<double?> Dijkstra(AdjacencyList dg, int starIndex)
+        /// <summary>
+        /// Dijkstra is an optimal algorithm for finding the shortest path in a digraph that has all positive ark values.
+        /// </summary>
+        /// <param name="dg"></param>
+        /// <param name="startIndex"></param>
+        /// <returns></returns>
+        public static List<double> Dijkstra(AdjacencyList dg, int startIndex)
         {
             List<int?> parent = new List<int?>();
-            List<double?> costs = new List<double?>();
-            List<Ark> PriorityStack = new List<Ark>();
-            dg.Digraph.ForEach(_ => { parent.Add(null); costs.Add(null); });
-            costs[starIndex] = 0;
-            parent[starIndex] = starIndex;
-            PriorityStack.Add(dg.WeightedDigraph.Where(x => x.initialNode == starIndex).OrderBy(x => x.value).First());
-            while (PriorityStack.Any())
+            List<double> costs = new List<double>();
+            List<int> stack = new List<int>();
+            dg.Digraph.ForEach(_ => { parent.Add(null); costs.Add(double.MaxValue); });
+            costs[startIndex] = 0;
+            parent[startIndex] = startIndex;
+            stack.Add(startIndex);
+            while (stack.Any())
             {
-                PriorityStack.OrderBy(x => x.value);
-                var edge = PriorityStack.First();
-                PriorityStack.Remove(edge);
-                foreach (var ark in dg.WeightedDigraph.Where(x => x.initialNode == edge.finalNode))
+                int node = stack.First();
+                stack.Remove(node);
+                foreach(var ark in dg.WeightedDigraph.OrderBy(x => x.value).Where(x => x.initialNode == node))
                 {
-                    if (costs[ark.initialNode] == null)
+                    if (costs[ark.finalNode] == double.MaxValue)
                     {
-                        parent[ark.initialNode] = edge.initialNode;
-                        costs[ark.initialNode] = costs[edge.initialNode] + ark.value;
-                        PriorityStack.Add(ark);
+                        parent[ark.finalNode] = ark.initialNode;
+                        costs[ark.finalNode] = costs[ark.initialNode] + ark.value;
+                        stack.Add(ark.finalNode);
                     }
-                    else if (costs[ark.finalNode] > costs[edge.finalNode] + ark.value || costs[ark.finalNode] == null)
+                    else if (costs[ark.finalNode] > costs[ark.initialNode] + ark.value)
                     {
-                        parent[ark.finalNode] = edge.finalNode;
-                        costs[ark.finalNode] = costs[edge.finalNode] + ark.value;
+                        parent[ark.finalNode] = ark.initialNode;
+                        costs[ark.finalNode] = costs[ark.initialNode] + ark.value;
                     }
                 }
             }
+
             return costs;
-        }
+        } 
     
 
         public static List<int> TopologicOrdenation(AdjacencyList dg)
