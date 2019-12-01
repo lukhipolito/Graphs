@@ -47,6 +47,12 @@ namespace Grafos012.Classes
             this.AddLine(v, w);
         }
 
+        public void AddUndirectedArk(int v, int w, double weight)
+        {
+            this.AddArk(v, w, weight);
+            this.AddArk(w, v, weight);
+        }
+
         public void Show()
         {
             Console.WriteLine("Selected Digraph: ");

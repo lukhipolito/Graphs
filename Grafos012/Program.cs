@@ -11,16 +11,22 @@ namespace Grafos012
     {
         static void Main(string[] args)
         {
-            AdjacencyList lst = new AdjacencyList(5);
+            AdjacencyList lst = new AdjacencyList(7);
 
-            lst.AddArk(0, 1, 5);
-            lst.AddArk(0, 2, 10);
-            lst.AddArk(1, 3, 3);
-            lst.AddArk(2, 4, 1);
-            lst.AddArk(3, 4, 6);
-            lst.AddArk(4, 1, -7);
+            lst.AddUndirectedArk(0, 2, 5);
+            lst.AddUndirectedArk(0, 3, 8);
+            lst.AddUndirectedArk(2, 3, 10);
+            lst.AddUndirectedArk(2, 1, 16);
+            lst.AddUndirectedArk(2, 4, 3);
+            lst.AddUndirectedArk(3, 4, 2);
+            lst.AddUndirectedArk(3, 5, 18);
+            lst.AddUndirectedArk(4, 1, 30);
+            lst.AddUndirectedArk(4, 5, 12);
+            lst.AddUndirectedArk(4, 6, 14);
+            lst.AddUndirectedArk(1, 6, 26);
+            lst.AddUndirectedArk(5, 6, 4);
 
-            var pre = Common.Helper.Bellman_Ford(lst, 0);
+            var pre = Common.Helper.Kruskal(lst);
 
             lst.Show();
 

@@ -266,13 +266,45 @@ namespace Grafos012.Common
             return true;
         }
 
-        private static void Kruskal(AdjacencyList dg)
+        public static List<int> Kruskal(AdjacencyList dg)
         {
-            List<Ark> Boss = new List<Ark>();
-            for (int v=0; v< dg.WeightedDigraph.Count; v++)
+            List<int> boss = new List<int>();
+            List<Ark> aaa = new List<Ark>();
+            for (int i = 0; i < dg.Digraph.Count; i++)
+                boss.Add(i);
+            while (true)
             {
-                //Boss.Add(v);
+                int v0 = 0, w0 = 0;
+                double minCost = double.MaxValue;
+                for (int node = 0; node < dg.Digraph.Count; node++)
+                {
+                    for(List<int> a = dg.Digraph[node]; a.Any(); a.RemoveAt(0))
+                    {
+                        var ark = dg.WeightedDigraph.Where(_ar => _ar.initialNode == node).OrderBy(_ar => _ar.value).First();
+                        if (boss[node] != boss[ark.finalNode] && minCost > ark.value)
+                        {
+                            minCost = ark.value;
+                            v0 = node;
+                            w0 = ark.finalNode;
+                        }
+                    }
+                    aaa.Add(dg.WeightedDigraph.FirstOrDefault(ab => ab.initialNode == v0 && ab.finalNode == w0));
+                }
+                aaa.RemoveAll(_a => _a == null);
+                aaa = aaa.Distinct().ToList();
+                if (minCost == double.MaxValue)
+                    break;
+
+                
+                int y = boss[w0];
+                int x = boss[v0];
+                for(int i = 0; i<dg.Digraph.Count; i++)
+                {
+                    if (boss[i] == y)
+                        boss[i] = x;
+                }
             }
+            return boss;
         }
 
         public static void Show(List<int?> lst, int i)
